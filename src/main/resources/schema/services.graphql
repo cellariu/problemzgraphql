@@ -1,0 +1,21 @@
+
+type Query {
+    me: User!
+    problemDetail(id: ID!): Problem!
+    problemLatestList: [Problem!]
+    itemSearch(filter:SearchableItemFilter): [SearchableItem]
+}
+
+type Mutation {
+    userCreate(user: UserCreateInput!): UserResponse!
+    userLogin(user: UserLoginInput!): UserResponse!
+    userActivation(user: UserActivationInput!): UserActivationResponse!
+    problemCreate(problem: ProblemCreateInput!): ProblemResponse!
+    solutionCreate(solution: SolutionCreateInput!): SolutionResponse!
+    solutionVote(vote: SolutionVoteInput!): SolutionResponse!
+}
+
+type Subscriptions {
+    problemAdded: Problem!
+    solutionVoteChanged(solutionId: ID!): Solution!
+}
