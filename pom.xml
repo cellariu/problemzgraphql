@@ -12,7 +12,7 @@
     <artifactId>problemzgraphql</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>problemzgraphql</name>
-    <description>problemzgraphql</description>
+    <description>A study of GraphQL</description>
 
     <properties>
         <java.version>11</java.version>
