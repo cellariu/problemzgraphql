@@ -1,0 +1,14 @@
+
+spring:
+  main:
+    banner-mode: console
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSSchema=problemz
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
