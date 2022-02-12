@@ -1,0 +1,7 @@
+
+type Query {
+    me: User!
+    problemDetail(id: ID!): Problem!
+    problemLatestList: [Problem!]
+    itemSearch(filter:SearchableItemFilter): [SearchableItem]
+}
