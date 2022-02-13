@@ -3,7 +3,7 @@ package com.cami.udemy.graphql.problemz.problemzgraphql.types;
 import lombok.*;
 
 import java.net.URL;
-import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Builder
@@ -17,7 +17,7 @@ public class User {
     private String username;
     private String email;
     private URL avatar;
-    private LocalTime createDateTime;
+    private OffsetDateTime createDateTime;
     private String displayName;
     @NonNull private List<Problem> problems;
 

@@ -37,6 +37,20 @@
         </dependency>
 
         <dependency>
+            <groupId>org.ocpsoft.prettytime</groupId>
+            <artifactId>prettytime</artifactId>
+            <version>5.0.2.Final</version>
+        </dependency>
+
+        <!-- used for cryptographic algorithms -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.70</version>
+
+        </dependency>
+
+        <dependency>
             <groupId>com.netflix.graphql.dgs</groupId>
             <artifactId>graphql-dgs-spring-boot-starter</artifactId>
             <version>4.9.15</version>

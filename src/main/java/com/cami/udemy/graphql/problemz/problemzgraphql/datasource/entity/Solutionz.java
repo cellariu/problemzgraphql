@@ -22,7 +22,7 @@ public class Solutionz {
     private String content;
 
     @CreationTimestamp
-    private LocalDateTime creationTimeStamp;
+    private LocalDateTime creationTimestamp;
 
     private int voteBadCount;
     private int voteGoodCount;
