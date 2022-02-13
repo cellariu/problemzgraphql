@@ -2,7 +2,7 @@ package com.cami.udemy.graphql.problemz.problemzgraphql.types;
 
 import lombok.*;
 
-import java.net.URI;
+import java.net.URL;
 
 @Builder
 @Getter
@@ -15,5 +15,5 @@ public class UserCreateInput {
     private String email;
     private String password;
     private String displayName;
-    private URI avatar;
+    private URL avatar;
 }
