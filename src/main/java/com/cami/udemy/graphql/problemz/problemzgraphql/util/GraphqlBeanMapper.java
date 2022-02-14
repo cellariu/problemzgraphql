@@ -9,6 +9,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,7 @@ public class GraphqlBeanMapper {
 
         result.setSolutions(
                 original.getSolutions().stream()
+//                    .sorted(Comparator.comparing(Solutionz::getCreationTimestamp).reversed())
                     .map(s -> mapToGrapghql(s))
                     .collect(Collectors.toList()));
 
