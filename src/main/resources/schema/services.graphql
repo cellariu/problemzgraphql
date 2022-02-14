@@ -15,7 +15,7 @@ type Mutation {
     solutionVote(vote: SolutionVoteInput!): SolutionResponse!
 }
 
-type Subscriptions {
+type Subscription {
     problemAdded: Problem!
     solutionVoteChanged(solutionId: ID!): Solution!
 }
