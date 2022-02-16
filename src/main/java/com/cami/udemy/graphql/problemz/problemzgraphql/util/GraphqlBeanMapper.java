@@ -8,9 +8,7 @@ import com.cami.udemy.graphql.problemz.problemzgraphql.types.*;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GraphqlBeanMapper {
@@ -97,4 +95,28 @@ public class GraphqlBeanMapper {
         return result;
     }
 
+    public static Problemz mapToEntity(ProblemCreateInput original, Userz author) {
+        var result = new Problemz();
+
+        result.setId(UUID.randomUUID());
+        result.setContent(original.getContent());
+        result.setCreatedBy(author);
+        result.setSolutions(Collections.emptyList());
+        result.setTags(String.join(",", original.getTags()));
+        result.setTitle(original.getTitle());
+
+        return result;
+    }
+
+    public static Solutionz mapToEntity(SolutionCreateInput original, Userz author, Problemz problemz) {
+        var result = new Solutionz();
+
+        result.setCategory(original.getCategory().name());
+        result.setContent(original.getContent());
+        result.setCreatedBy(author);
+        result.setId(UUID.randomUUID());
+        result.setProblemz(problemz);
+
+        return result;
+    }
 }
