@@ -6,7 +6,6 @@ import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.repository.Pro
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

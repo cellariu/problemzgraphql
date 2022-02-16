@@ -13,7 +13,7 @@ public class SolutionzQueryService {
     @Autowired
     private SolutionzRespository repository;
 
-    public List<Solutionz> solutionzRepository(String keyword) {
+    public List<Solutionz> solutionzByKeyword(String keyword) {
         return repository.findByKeyword("%" + keyword + "%");
     }
 

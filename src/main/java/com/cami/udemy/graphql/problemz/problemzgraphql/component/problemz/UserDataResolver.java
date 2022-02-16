@@ -1,17 +1,29 @@
 package com.cami.udemy.graphql.problemz.problemzgraphql.component.problemz;
 
+import com.cami.udemy.graphql.problemz.problemzgraphql.service.command.UserzCommandService;
+import com.cami.udemy.graphql.problemz.problemzgraphql.service.query.UserzQueryService;
 import com.cami.udemy.graphql.problemz.problemzgraphql.types.*;
+import com.cami.udemy.graphql.problemz.problemzgraphql.util.GraphqlBeanMapper;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.InputArgument;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @DgsComponent
 public class UserDataResolver {
 
+    @Autowired
+    private UserzCommandService userzCommandService;
+
+    @Autowired
+    private UserzQueryService userzQueryService;
+
+
     @DgsData(parentType = "Query", field = "me")
     public User accountInfo(@RequestHeader(name = "authToken", required = true) String authToken) {
-        return null;
+        var userz = userzQueryService.findUserzByAuthToken(authToken).get();
+        return GraphqlBeanMapper.mapToGrapghql(userz);
     }
 
     @DgsData(parentType = "Mutation", field = "userCreate")
@@ -21,7 +33,18 @@ public class UserDataResolver {
 
     @DgsData(parentType = "Mutation", field = "userLogin")
     public UserResponse loginUser(@InputArgument(name = "user") UserLoginInput userLoginInput) {
-        return null;
+
+        var generatedToken = userzCommandService.login(userLoginInput.getUsername(), userLoginInput.getPassword());
+
+        var userAuthToken = GraphqlBeanMapper.mapToGrapghql(generatedToken);
+
+        var userInfo = accountInfo(userAuthToken.getAuthToken());
+
+        var userResponse = UserResponse.builder()
+                .user(userInfo)
+                .authToken(userAuthToken)
+                .build();
+        return userResponse;
     }
 
     @DgsData(parentType = "Mutation", field = "userActivation")

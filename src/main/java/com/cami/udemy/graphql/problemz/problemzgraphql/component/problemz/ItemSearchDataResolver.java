@@ -4,12 +4,16 @@ import com.cami.udemy.graphql.problemz.problemzgraphql.service.query.ProblemzQue
 import com.cami.udemy.graphql.problemz.problemzgraphql.service.query.SolutionzQueryService;
 import com.cami.udemy.graphql.problemz.problemzgraphql.types.SearchableItem;
 import com.cami.udemy.graphql.problemz.problemzgraphql.types.SearchableItemFilter;
+import com.cami.udemy.graphql.problemz.problemzgraphql.util.GraphqlBeanMapper;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.InputArgument;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @DgsComponent
 public class ItemSearchDataResolver {
@@ -22,6 +26,22 @@ public class ItemSearchDataResolver {
 
     @DgsData(parentType = "Query", field = "itemSearch")
     public List<SearchableItem> searchItems(@InputArgument(name = "filter") SearchableItemFilter searchableItemFilter) {
-        return null;
+        var result = new ArrayList<SearchableItem>();
+        var keyword = searchableItemFilter.getKeyword();
+
+        var problemzByKeyword = problemzQueryService.problemzByKeyword(keyword).stream()
+                .map(GraphqlBeanMapper::mapToGrapghql).collect(Collectors.toList());
+
+        result.addAll(problemzByKeyword);
+
+        var solutionzByKeyword = solutionzQueryService.solutionzByKeyword(keyword).stream()
+                .map(GraphqlBeanMapper:: mapToGrapghql)
+                .collect(Collectors.toList());
+
+        result.addAll(solutionzByKeyword);
+
+        result.sort(Comparator.comparing(SearchableItem::getCreateDateTime).reversed());
+
+        return result;
     }
 }
