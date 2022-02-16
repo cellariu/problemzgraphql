@@ -3,6 +3,7 @@ package com.cami.udemy.graphql.problemz.problemzgraphql.service.command;
 import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.entity.UserzToken;
 import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.repository.UserzRepository;
 import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.repository.UserzTokenRepository;
+import com.cami.udemy.graphql.problemz.problemzgraphql.exception.ProblemzAuthenticationException;
 import com.cami.udemy.graphql.problemz.problemzgraphql.util.HashUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class UserzCommandService {
         var userz = userzRepository.findByUsernameIgnoreCase(username);
 
         if (userz.isEmpty() || !HashUtil.isBcryptMatch(password, userz.get().getHashedPassword())) {
-            throw new IllegalArgumentException("Invalid credentials");
+            //throw new IllegalArgumentException("Invalid credentials");
+            throw new ProblemzAuthenticationException();
         }
 
         var randomAuthToken = RandomStringUtils.randomAlphanumeric(40);

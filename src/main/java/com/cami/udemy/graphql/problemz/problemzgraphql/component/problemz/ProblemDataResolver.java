@@ -10,6 +10,7 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
+import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestHeader;
 import reactor.core.publisher.Flux;
@@ -34,13 +35,12 @@ public class ProblemDataResolver {
 
     @DgsData(parentType = "Query", field = "problemDetail")
     public Problem getProblemDetail(@InputArgument(name = "id") String problemId) {
-        Optional<Problemz> optionalProblemz = problemzQueryService.problemzDetail(UUID.fromString(problemId));
 
-        if(optionalProblemz.isEmpty()) {
-            Optional<Problem> noProblem = Optional.empty();
-            return noProblem.get();
-        }
-        return GraphqlBeanMapper.mapToGrapghql(optionalProblemz.get());
+        var problemzId = UUID.fromString(problemId);
+        var problemz = problemzQueryService.problemzDetail(problemzId)
+                .orElseThrow(DgsEntityNotFoundException::new);
+
+        return GraphqlBeanMapper.mapToGrapghql(problemz);
     }
 
     @DgsData(parentType = "Mutation", field = "problemCreate")
