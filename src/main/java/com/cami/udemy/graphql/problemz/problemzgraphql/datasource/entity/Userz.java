@@ -30,5 +30,5 @@ public class Userz {
 
     private Boolean active;
     private String displayName;
-    private String userRole;    //  it was not mentioned?
+    private String userRole;
 }
