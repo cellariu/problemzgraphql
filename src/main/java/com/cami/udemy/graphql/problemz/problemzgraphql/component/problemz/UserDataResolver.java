@@ -1,5 +1,6 @@
 package com.cami.udemy.graphql.problemz.problemzgraphql.component.problemz;
 
+import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.entity.Userz;
 import com.cami.udemy.graphql.problemz.problemzgraphql.service.command.UserzCommandService;
 import com.cami.udemy.graphql.problemz.problemzgraphql.service.query.UserzQueryService;
 import com.cami.udemy.graphql.problemz.problemzgraphql.types.*;
@@ -10,6 +11,8 @@ import com.netflix.graphql.dgs.InputArgument;
 import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestHeader;
+
+import java.util.Optional;
 
 @DgsComponent
 public class UserDataResolver {
@@ -30,7 +33,16 @@ public class UserDataResolver {
 
     @DgsData(parentType = "Mutation", field = "userCreate")
     public UserResponse createUser(@InputArgument(name = "user") UserCreateInput userCreateInput) {
-        return null;
+
+        var userz = GraphqlBeanMapper.mapToEntity(userCreateInput);
+
+        var createdUserz =  userzCommandService.createUserz(userz);
+
+        var userResponse = UserResponse.builder()
+                .user(GraphqlBeanMapper.mapToGrapghql(createdUserz))
+                .build();
+
+        return userResponse;
     }
 
     @DgsData(parentType = "Mutation", field = "userLogin")
@@ -51,6 +63,18 @@ public class UserDataResolver {
 
     @DgsData(parentType = "Mutation", field = "userActivation")
     public UserActivationResponse activateUser(@InputArgument(name = "user") UserActivationInput userActivationInput) {
-        return null;
+
+        Optional<Userz> userz = userzCommandService.activateUser(
+                userActivationInput.getUsername(), userActivationInput.getActive());
+
+        if (userz.isEmpty()) {
+            throw new DgsEntityNotFoundException("User " + userActivationInput.getUsername() + " could not be found in DB!");
+        }
+
+        var userActivationResponse = UserActivationResponse.builder()
+                .isActive(userz.get().getActive())
+                .build();
+
+        return userActivationResponse;
     }
 }

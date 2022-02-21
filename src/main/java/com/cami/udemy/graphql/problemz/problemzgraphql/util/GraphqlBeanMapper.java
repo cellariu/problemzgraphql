@@ -7,6 +7,7 @@ import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.entity.UserzTo
 import com.cami.udemy.graphql.problemz.problemzgraphql.types.*;
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -116,6 +117,21 @@ public class GraphqlBeanMapper {
         result.setCreatedBy(author);
         result.setId(UUID.randomUUID());
         result.setProblemz(problemz);
+
+        return result;
+    }
+
+    public static Userz mapToEntity(UserCreateInput original) {
+        var result = new Userz();
+
+        result.setId(UUID.randomUUID());
+        result.setUsername(original.getUsername());
+        result.setEmail(original.getEmail());
+        result.setHashedPassword(HashUtil.hashBcrypt(original.getPassword()));
+        result.setAvatar(original.getAvatar());
+        result.setCreationTimestamp(LocalDateTime.now());
+        result.setDisplayName(original.getDisplayName());
+        result.setActive(true);
 
         return result;
     }

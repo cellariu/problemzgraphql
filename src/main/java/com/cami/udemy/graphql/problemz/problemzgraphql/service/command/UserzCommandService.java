@@ -1,5 +1,6 @@
 package com.cami.udemy.graphql.problemz.problemzgraphql.service.command;
 
+import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.entity.Userz;
 import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.entity.UserzToken;
 import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.repository.UserzRepository;
 import com.cami.udemy.graphql.problemz.problemzgraphql.datasource.repository.UserzTokenRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,5 +50,15 @@ public class UserzCommandService {
         userzToken.setExpiryTimestamp(now.plusHours(2));
 
         return userzTokenRepository.save(userzToken);
+    }
+
+    public Userz createUserz(Userz userz) {
+        return userzRepository.save(userz);
+    }
+
+    public Optional<Userz> activateUser(String username, boolean isActive) {
+        userzRepository.activateUser(username, isActive);
+
+        return userzRepository.findByUsernameIgnoreCase(username);
     }
 }
