@@ -69,6 +69,6 @@ public class ProblemDataResolver {
 
     @DgsData(parentType = "Subscription", field = "problemAdded")
     public Flux<Problem> subscribeProblemAdded() {
-        return null;
+        return problemzCommandService.problemzFlux().map(GraphqlBeanMapper::mapToGrapghql);
     }
 }

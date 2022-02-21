@@ -82,6 +82,6 @@ public class SolutionDataResolver {
 
     @DgsData(parentType = "Subscription", field = "solutionVoteChanged")
     public Flux<Solution> changeVoteForSolution(@InputArgument(name = "solutionId") String solutionId) {
-        return null;
+        return solutionzCommandService.solutionzFlux().map(GraphqlBeanMapper::mapToGrapghql);
     }
 }
