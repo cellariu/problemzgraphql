@@ -14,6 +14,7 @@ import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PermissionDeniedDataAccessException;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Optional;
@@ -35,16 +36,17 @@ public class UserDataResolver {
         return GraphqlBeanMapper.mapToGrapghql(userz);
     }
 
+    @Secured("ROLE_ADMIN")
     @DgsData(parentType = "Mutation", field = "userCreate")
-    public UserResponse createUser(@InputArgument(name = "user") UserCreateInput userCreateInput,
-                                   @RequestHeader(name = "authToken", required = true) String authToken) {
+    public UserResponse createUser(@InputArgument(name = "user") UserCreateInput userCreateInput/*,
+                                   @RequestHeader(name = "authToken", required = true) String authToken*/) {
 
-        var userzAuth = userzQueryService.findUserzByAuthToken(authToken)
-                .orElseThrow(ProblemzAuthenticationException::new);
-
-        if (!StringUtils.equals(userzAuth.getUserRole(), "ROLE_ADMIN")) {
-            throw new ProblemzPermissionException();
-        }
+//        var userzAuth = userzQueryService.findUserzByAuthToken(authToken)
+//                .orElseThrow(ProblemzAuthenticationException::new);
+//
+//        if (!StringUtils.equals(userzAuth.getUserRole(), "ROLE_ADMIN")) {
+//            throw new ProblemzPermissionException();
+//        }
 
         var userz = GraphqlBeanMapper.mapToEntity(userCreateInput);
 
@@ -73,16 +75,17 @@ public class UserDataResolver {
         return userResponse;
     }
 
+    @Secured("ROLE_ADMIN")
     @DgsData(parentType = "Mutation", field = "userActivation")
-    public UserActivationResponse activateUser(@InputArgument(name = "user") UserActivationInput userActivationInput,
-                                               @RequestHeader(name = "authToken", required = true) String authToken) {
+    public UserActivationResponse activateUser(@InputArgument(name = "user") UserActivationInput userActivationInput/*,
+                                               @RequestHeader(name = "authToken", required = true) String authToken*/) {
 
-        var userzAuth = userzQueryService.findUserzByAuthToken(authToken)
-                .orElseThrow(ProblemzAuthenticationException::new);
-
-        if (!StringUtils.equals(userzAuth.getUserRole(), "ROLE_ADMIN")) {
-            throw new ProblemzPermissionException();
-        }
+//        var userzAuth = userzQueryService.findUserzByAuthToken(authToken)
+//                .orElseThrow(ProblemzAuthenticationException::new);
+//
+//        if (!StringUtils.equals(userzAuth.getUserRole(), "ROLE_ADMIN")) {
+//            throw new ProblemzPermissionException();
+//        }
 
         Optional<Userz> userz = userzCommandService.activateUser(
                 userActivationInput.getUsername(), userActivationInput.getActive());
